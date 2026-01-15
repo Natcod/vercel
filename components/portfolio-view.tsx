@@ -1,4 +1,7 @@
 "use client";
+import PortfolioChart from "./portfolio-chart";
+import TimeframeSelector from "./timeframe-selector";
+import PortfolioStocksList from "./portfolio-stocks-list";
 
 export default function PortfolioView() {
   return (
@@ -28,11 +31,15 @@ export default function PortfolioView() {
                 </div>
               </div>
               <div className="border-b border-[var(--panel-divider)]" />
+              <PortfolioChart />
+              <TimeframeSelector />
             </section>
           </div>
 
           {/* Portfolio stocks list */}
-          <div className="min-w-0"></div>
+          <div className="min-w-0">
+            <PortfolioStocksList />
+          </div>
         </div>
       </div>
     </main>
