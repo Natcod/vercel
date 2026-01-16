@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { toast } from "sonner"
+// import { toast } from "sonner"
 import { useState } from "react"
 import { X } from "lucide-react"
 import { useStockStore } from "@/lib/store"
@@ -37,9 +37,9 @@ export default function TradeModal({ isOpen, onClose, type }: TradeModalProps) {
     onClose()
 
     // Show success message
-    toast.success(`${type.charAt(0).toUpperCase() + type.slice(1)} order placed successfully!`, {
-      description: `${quantity} shares of ${selectedStock.ticker} at $${selectedStock.price.toFixed(2)}`,
-    })
+    // toast.success(`${type.charAt(0).toUpperCase() + type.slice(1)} order placed successfully!`, {
+    //   description: `${quantity} shares of ${selectedStock.ticker} at $${selectedStock.price.toFixed(2)}`,
+    // })
   }
 
   const totalValue = quantity ? (Number.parseFloat(quantity) * selectedStock.price).toFixed(2) : "0.00"
