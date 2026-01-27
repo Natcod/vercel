@@ -9,7 +9,7 @@ interface StockPageProps {
 }
 
 export default function StockPage({ params }: StockPageProps) {
-  const ticker = params.ticker.toUpperCase()
+  const ticker = params.ticker?.toUpperCase()
 
   if (!STOCK_DATA[ticker]) {
     notFound()
