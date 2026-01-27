@@ -12,11 +12,13 @@ async function seedUsers() {
       last_name VARCHAR(255),
       username VARCHAR(255),
       language_code VARCHAR(10),
-      is_premium BOOLEAN,
-      is_bot BOOLEAN,
-      allows_write_to_pm BOOLEAN,
-      added_to_attachment_menu BOOLEAN,
-      photo_url TEXT
+      is_premium BOOLEAN DEFAULT FALSE,
+      is_bot BOOLEAN DEFAULT FALSE,
+      allows_write_to_pm BOOLEAN DEFAULT FALSE,
+      added_to_attachment_menu BOOLEAN DEFAULT FALSE,
+      photo_url TEXT,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
   `;
 }
