@@ -65,11 +65,11 @@ async function seedPortfolios() {
     CREATE TABLE IF NOT EXISTS portfolios (
       id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
       user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-      ticker VARCHAR(20) NOT NULL,
+      asset_symbol VARCHAR(20) NOT NULL,
       quantity INTEGER NOT NULL,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      UNIQUE(user_id, ticker)
+      UNIQUE(user_id, asset_symbol)
     );
   `;
 }
