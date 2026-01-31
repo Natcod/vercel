@@ -72,6 +72,30 @@ async function seedPortfolios() {
   `;
 }
 
+async function seedAssets() {
+  await sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+  await sql`
+    CREATE TABLE IF NOT EXISTS assets (
+      id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+      alpaca_id VARCHAR(255) UNIQUE NOT NULL,
+      class VARCHAR(255) NOT NULL,
+      exchange VARCHAR(255),
+      symbol VARCHAR(255) NOT NULL,
+      name VARCHAR(255) NOT NULL,
+      status VARCHAR(255),
+      tradable BOOLEAN,
+      marginable BOOLEAN,
+      maintenance_margin_requirement INTEGER,
+      maintenance_margin_requirement_long INTEGER,
+      maintenance_margin_requirement_short INTEGER,
+      shortable BOOLEAN,
+      easy_to_borrow BOOLEAN,
+      fractionable BOOLEAN,
+      attributes TEXT[]
+    );
+  `;
+}
+
 export async function GET() {
   try {
     const result = await sql.begin((sql) => [
@@ -79,6 +103,7 @@ export async function GET() {
       seedOrders(),
       seedWallets(),
       seedPortfolios(),
+      seedAssets(),
     ]);
 
     return Response.json({ message: "Database seeded successfully" });
