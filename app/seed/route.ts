@@ -26,6 +26,9 @@ async function seedUsers() {
 async function seedOrders() {
   await sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
 
+  // Create enum type
+  await sql`DO $$ BEGIN CREATE TYPE order_type_enum AS ENUM ('buy', 'sell'); EXCEPTION WHEN duplicate_object THEN END $$`;
+
   await sql`
     CREATE TABLE IF NOT EXISTS orders (
       id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
@@ -33,7 +36,7 @@ async function seedOrders() {
       ticker VARCHAR(20) NOT NULL,
       asset_symbol VARCHAR(255),
       exchange VARCHAR(50),
-      order_type VARCHAR(20) NOT NULL,
+      order_type order_type_enum NOT NULL,
       quantity INTEGER NOT NULL,
       price NUMERIC(15, 2) NOT NULL,
       status VARCHAR(20) NOT NULL,
