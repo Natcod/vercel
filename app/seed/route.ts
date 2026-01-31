@@ -31,7 +31,7 @@ async function seedOrders() {
       id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
       user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
       ticker VARCHAR(20) NOT NULL,
-      company_name VARCHAR(255),
+      asset_symbol VARCHAR(255),
       exchange VARCHAR(50),
       order_type VARCHAR(20) NOT NULL,
       quantity INTEGER NOT NULL,
