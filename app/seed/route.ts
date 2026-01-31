@@ -33,8 +33,7 @@ async function seedOrders() {
     CREATE TABLE IF NOT EXISTS orders (
       id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
       user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-      ticker VARCHAR(20) NOT NULL,
-      asset_symbol VARCHAR(255),
+      asset_symbol VARCHAR(20),
       exchange VARCHAR(50),
       order_type order_type_enum NOT NULL,
       quantity INTEGER NOT NULL,
