@@ -28,6 +28,7 @@ async function seedOrders() {
 
   // Create enum type
   await sql`DO $$ BEGIN CREATE TYPE order_type_enum AS ENUM ('buy', 'sell'); EXCEPTION WHEN duplicate_object THEN END $$`;
+  await sql`DO $$ BEGIN CREATE TYPE status_enum AS ENUM ('pending', 'success', 'failed'); EXCEPTION WHEN duplicate_object THEN END $$`;
 
   await sql`
     CREATE TABLE IF NOT EXISTS orders (
@@ -38,7 +39,7 @@ async function seedOrders() {
       order_type order_type_enum NOT NULL,
       quantity INTEGER NOT NULL,
       price NUMERIC(15, 2) NOT NULL,
-      status VARCHAR(20) NOT NULL,
+      status status_enum NOT NULL,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
   `;
