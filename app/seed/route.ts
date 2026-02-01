@@ -1,6 +1,7 @@
 import postgres from "postgres";
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
+import { seedAlpacaAssets } from "@/lib/alpaca-assets-data";
 
 async function seedUsers() {
   await sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
@@ -77,6 +78,7 @@ async function seedPortfolios() {
 
 async function seedAssets() {
   await sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+
   await sql`
     CREATE TABLE IF NOT EXISTS assets (
       id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
@@ -97,6 +99,46 @@ async function seedAssets() {
       attributes TEXT[]
     );
   `;
+
+  const inserted = await Promise.all(
+    seedAlpacaAssets.map(
+      (asset) =>
+        sql`
+        INSERT INTO assets (
+          alpaca_id,
+          class,
+          exchange,
+          symbol,
+          name,
+          status,
+          tradable,
+          marginable,
+          shortable,
+          easy_to_borrow,
+          fractionable,
+          attributes
+          -- add maintenance_margin_* columns only if you actually have the data in JSON
+        )
+        VALUES (
+          ${asset.alpaca_id},
+          ${asset.class},
+          ${asset.exchange},
+          ${asset.symbol},
+          ${asset.name},
+          ${asset.status},
+          ${asset.tradable ?? true},          -- default to true if missing
+          ${asset.marginable ?? true},
+          ${asset.shortable ?? true},
+          ${asset.easy_to_borrow ?? true},
+          ${asset.fractionable ?? true},
+          ${sql.array(asset.attributes ?? [])}
+        )
+        ON CONFLICT (alpaca_id) DO NOTHING;
+      `,
+    ),
+  );
+
+  return inserted;
 }
 
 export async function GET() {
